@@ -1,0 +1,187 @@
+<label class="toggle">
+    <input type="checkbox" class="func_checkbox" checked modname="model" fucname="func" columnname="123">
+    <span class="handle"></span>
+</label>
+
+<script>
+    $(".func_checkbox").click(function(){
+        var mod_name = $(this).attr('modname');
+        var fuc_name = $(this).attr('fucname');
+        var class_id = $(this).attr('columnname');
+        if (typeof($(this).attr('checked')) == 'undefined'){
+            alert('set:'+ mod_name + '#' + fuc_name + '_' + class_id);
+            $(this).attr("checked",true);
+        }else{
+            alert('unset:'+ mod_name + '#' + fuc_name + '_' + class_id);
+            $(this).attr("checked",false);
+        }
+    });
+</script>
+
+<div class="content-row">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title"><b>Create Form</b>
+      </div>
+
+      <div class="panel-options">
+        <a class="bg" data-target="#sample-modal-dialog-1" data-toggle="modal" href="#sample-modal"><i class="entypo-cog"></i></a>
+        <a data-rel="collapse" href="#"><i class="entypo-down-open"></i></a>
+        <a data-rel="close" href="#!/tasks" ui-sref="Tasks"><i class="entypo-cancel"></i></a>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <form novalidate="" role="form" class="form-horizontal column-datas">
+        <div class="form-group">
+          <label class="col-md-2 control-label">Title</label>
+          <div class="col-md-10">
+            <input type="text" required="" placeholder="Title" id="title" class="form-control" name="title">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-2 control-label">Subject</label>
+          <div class="col-md-10">
+            <input type="text" required="" placeholder="Subject" id="subject" class="form-control" name="subject">
+          </div>
+        </div>
+<div class="form-group">
+<label class="col-md-2 control-label">Subject</label>
+  <div class="col-md-10">
+<ol class="breadcrumb breadcrumb-arrow img-upload">
+    <li class="upload-pic-view"><img class="img-rounded" src="/static/img/thumbnail-1.jpg"></li>
+    <li class="upload-pic-info">
+        <a><span class="glyphicon glyphicon-font"></span></a>
+        <input class="input-sm" type="text" placeholder=".input-sm">
+        <a><span class="glyphicon glyphicon-comment"></span></a>
+        <input class="input-sm" type="text" placeholder=".input-sm">
+    </li>
+    <li class="upload-pic-btn">
+        <button type="button" class="btn btn-success btn-block"><span class="glyphicon glyphicon-ok"></span></button>
+    </li>
+    <li class="upload-pic-btn">
+        <button type="button" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-refresh"></span></button>
+    </li>
+    <li class="upload-pic-btn">
+        <button type="button" class="btn btn-danger btn-block"><span class="glyphicon glyphicon-remove"></span></button>
+    </li>
+</ol>
+  </div>
+</div>
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="description">Description</label>
+          <div class="col-md-10">
+            <textarea required="" class="form-control" placeholder="Description" rows="10" cols="30" id="description" name="description"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-offset-2 col-md-10">
+            <button class="btn btn-info" type="submit" id="data-submit">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<script>
+{#    $("#data-submit").click(function(){#}
+{#        var valArr = new Array;#}
+{#        $("form.column-datas").find(".form-control").each(function(i){#}
+{#            valArr[i] = $(this).attr('name')+':'+$(this).val();#}
+{#        });#}
+{#        var priv = valArr.join(',');#}
+{#        alert(priv);#}
+{#        alert(the_input.attr('name')+':'+the_input.val())#}
+{#    });#}
+
+$("#data-submit").click(function(){
+    console.log($('.column-datas').serializeJson());
+    return false
+});
+
+//jquery插件把表单序列化成json格式的数据start
+(function($){
+    $.fn.serializeJson=function(){
+        var serializeObj={};
+        var array=this.serializeArray();
+{#        var str=this.serialize();#}
+        $(array).each(function(){
+            if(serializeObj[this.name]){
+                if($.isArray(serializeObj[this.name])){
+                    serializeObj[this.name].push(this.value);
+                }else{
+                    serializeObj[this.name]=[serializeObj[this.name],this.value];
+                }
+            }else{
+                serializeObj[this.name]=this.value;
+            }
+        });
+        return serializeObj;
+    };
+})(jQuery);
+//jquery插件把表单序列化成json格式的数据end
+</script>
+
+<style>
+.img-upload {
+    height: 120px;
+}
+.img-upload li {
+    height: 120px;
+    margin-left: -3px;
+}
+.img-upload li img{
+    height: 120px;
+    width: auto;
+}
+.img-upload li a {
+    float: left;
+    height: 50%;
+    width: 20%;
+    padding-left: 2%;
+    padding-top: 2%;
+}
+.img-upload li input {
+    float: left;
+    height: 50%;
+    width: 80%;
+}
+.img-upload li button {
+    height: 100%;
+    width: 100%;
+}
+
+.img-upload .upload-pic-view {
+    width: 20%;
+}
+.img-upload .upload-pic-info {
+    width: 50%;
+}
+.img-upload .upload-pic-btn {
+    width: 10%;
+}
+</style>
+<div>
+<ol class="breadcrumb breadcrumb-arrow img-upload">
+    <li class="upload-pic-view"><img class="img-rounded" src="/static/img/thumbnail-1.jpg"></li>
+    <li class="upload-pic-info">
+        <a><span class="glyphicon glyphicon-font"></span></a>
+        <input class="input-sm" type="text" placeholder=".input-sm">
+        <a><span class="glyphicon glyphicon-comment"></span></a>
+        <input class="input-sm" type="text" placeholder=".input-sm">
+    </li>
+    <li class="upload-pic-btn">
+        <button type="button" class="btn btn-success btn-block"><span class="glyphicon glyphicon-ok"></span></button>
+    </li>
+    <li class="upload-pic-btn">
+        <button type="button" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-refresh"></span></button>
+    </li>
+    <li class="upload-pic-btn">
+        <button type="button" class="btn btn-danger btn-block"><span class="glyphicon glyphicon-remove"></span></button>
+    </li>
+</ol>
+</div>
+这里

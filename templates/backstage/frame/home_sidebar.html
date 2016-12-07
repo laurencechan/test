@@ -1,0 +1,38 @@
+<div class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
+    <ul class="list-group panel">
+        <li class="list-group-item"><a href="{{ URL_BASE }}/home"><i class="glyphicon glyphicon-home"></i>后台主页 </a></li>
+        <li class="list-group-item"><a href="{{ URL_BASE }}/sys-setup"><i class="glyphicon glyphicon-certificate"></i>系统设置 </a></li>
+
+        {% for fuc in all_fuc.items() %}
+        <li>
+            <a href="{{ URL_BASE }}/model/{{ fuc.0 }}" class="list-group-item ">
+                <i class="glyphicon glyphicon-cog"></i>
+                {{ fuc.0|fuc_name }}
+            </a>
+        </li>
+        {% endfor %}
+
+        <li class="list-group-item"><i class="glyphicon glyphicon-align-justify"></i> <b>内容版块</b></li>
+
+        {% for key, value in all_column.items() recursive %}
+            {% if value|is_dict %}
+            <li>
+                <a href="#column_{{ key }}" class="list-group-item" data-toggle="collapse">
+                    <i class="glyphicon glyphicon-th-list"></i>
+                    {{ key|column_name }}
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            </li>
+            <li class="collapse {% if key == father %}in{% endif %}" id="column_{{ key }}">
+                {% for column, v in value.items() %}
+                <a href="{{ URL_BASE }}/column/{{ column }}" class="list-group-item">
+                    {{ column|column_name }}
+                </a>
+                {% endfor %}
+            </li>
+            {{ loop(value.items())}}
+            {% endif %}
+        {% endfor %}
+
+      </ul>
+</div>

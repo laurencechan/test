@@ -1,0 +1,109 @@
+<style>
+    h3.panel-title {
+        display: inline-block;
+    }
+    .panel-heading button {
+        float: right;
+    }
+    .panel-heading input {
+        float: right;
+    }
+    .panel-heading div {
+        float: right;
+    }
+</style>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">用户管理</h3>
+{#        <button type="button" class="btn btn-primary col-md-2{% if not content_power.insert %}disabled{% endif %}">新增用户</button>#}
+        <div class="col-md-3">
+          <div class="input-group form-search">
+            <input type="text" class="form-control search-query">
+            <span class="input-group-btn">
+              <button data-type="last" class="btn btn-success" type="submit">Search</button>
+            </span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <span class="badge badge-primary">共有用户{{ list_data.page.total }}</span>
+{#          <span class="badge badge-success">super用户 {{ list_data.page.permission.group == "super" }}</span>#}
+{#          <span class="badge badge-danger">未审文章 {{ list_data.page.total - list_data.page.reviewed }}</span>#}
+        </div>
+    </div>
+    <div class="panel-body">
+    </div>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>用户名</th>
+            <th>电话</th>
+            <th>用户类型</th>
+            <th>创建时间</th>
+            <th>性别</th>
+            <th>年龄</th>
+{#            <th>头像</th>#}
+            <th>所属单位</th>
+            <th>操作(编辑)</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for content in list_data.data %}
+            <tr>
+                <td>{{ content.username }}</td>
+                {% if "phone" in content.keys() %}
+                    {% if content.phone != "" %}
+                <td>{{ content.phone }}</td>
+                        {% else %}
+                        <td>暂无</td>
+                        {% endif %}
+            {% else %}
+                <td>NA</td>
+            {% endif %}
+                <td>{{ content.permission.group }}</td>
+            {% if "create_date" in content.keys() %}
+                <td>{{ content.create_date }}</td>
+            {% else %}
+                <td>NA</td>
+            {% endif %}
+                {% if 'infos' in content.keys() %}
+                <td>{{ content.infos.sex if content.infos.sex!="" else "未定义" }}</td>
+                <td>{{ content.infos.age if content.infos.age!="" else "未定义" }}</td>
+{#                <td>{{ content.infos.headimg if content.infos.headimg!="" else "暂无" }}</td>#}
+                <td>{{ content.infos.belong if content.infos.belong!="" else "未定义" }}</td>
+                {% else %}
+                    <td>NA</td>
+                    <td>NA</td>
+{#                    <td>NA</td>#}
+                    <td>NA</td>
+                {% endif %}
+{#                <td>{{ content.infos.belong }}</td>#}
+{#                <td>#}
+{#                    {% if content.reviewed %}#}
+{#                    <span class="glyphicon glyphicon-ok"></span>#}
+{#                    {% else %}#}
+{#                    <span class="glyphicon glyphicon-remove"></span>#}
+{#                    {% endif %}#}
+{#                </td>#}
+                <td class="btn-group">
+                <button type="button" class="btn btn-success" onclick="modify('{{ content._id }}')">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                            </button>
+{#                    <button type="button" class="btn btn-info disabled">预览</button>#}
+{#                    <button type="button" class="btn btn-info {% if not content_power.modify %}disabled{% endif %}">编辑</button>#}
+{#                    <button type="button" class="btn btn-info {% if not content_power.remove %}disabled{% endif %}">删除</button>#}
+{#                    <button type="button" class="btn btn-info {% if not content_power.review %}disabled{% endif %}">审核</button>#}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+</div>
+{% set page = list_data.page %}
+{% include 'backstage/parts/page_nav.html' %}
+
+<script>
+    function modify(id) {
+        window.location.href = "/control/model/UserMod/detail?id=" + id;
+    }
+</script>

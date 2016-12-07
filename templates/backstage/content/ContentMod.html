@@ -1,0 +1,75 @@
+<style>
+    h3.panel-title {
+        display: inline-block;
+    }
+    .panel-heading button {
+        float: right;
+    }
+    .panel-heading input {
+        float: right;
+    }
+    .panel-heading div {
+        float: right;
+    }
+</style>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">文章管理</h3>
+        <button type="button" class="btn btn-primary col-md-2{% if not content_power.insert %}disabled{% endif %}">新增文章</button>
+        <div class="col-md-3">
+          <div class="input-group form-search">
+            <input type="text" class="form-control search-query">
+            <span class="input-group-btn">
+              <button data-type="last" class="btn btn-success" type="submit">Search</button>
+            </span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <span class="badge badge-primary">共有文章 {{ list_data.page.total }}</span>
+          <span class="badge badge-success">过审文章 {{ list_data.page.reviewed }}</span>
+          <span class="badge badge-danger">未审文章 {{ list_data.page.total - list_data.page.reviewed }}</span>
+        </div>
+    </div>
+    <div class="panel-body">
+    </div>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>文章题目</th>
+            <th>文章类型</th>
+            <th>编辑ID</th>
+            <th>所属分组</th>
+            <th>发布时间</th>
+            <th>是否过审</th>
+            <th>执行操作</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for content in list_data.data %}
+            <tr>
+                <td>{{ content._id|id2content_title }}</td>
+                <td>{{ content.content_type }}</td>
+                <td>{{ content.author_id|id2username }}</td>
+                <td>{{ content.class_id|column_name }}</td>
+                <td>{{ content.addtime }}</td>
+                <td>
+                    {% if content.reviewed %}
+                    <span class="glyphicon glyphicon-ok"></span>
+                    {% else %}
+                    <span class="glyphicon glyphicon-remove"></span>
+                    {% endif %}
+                </td>
+                <td class="btn-group">
+                    <button type="button" class="btn btn-info disabled">预览</button>
+                    <button type="button" class="btn btn-info {% if not content_power.modify %}disabled{% endif %}">修改</button>
+                    <button type="button" class="btn btn-info {% if not content_power.remove %}disabled{% endif %}">删除</button>
+                    <button type="button" class="btn btn-info {% if not content_power.review %}disabled{% endif %}">审核</button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+</div>
+{% set page = list_data.page %}
+{% include 'backstage/parts/page_nav.html' %}

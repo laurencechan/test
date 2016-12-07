@@ -1,0 +1,100 @@
+{#<!-- extend base layout -->#}
+{% extends "backstage/base/base.html" %}
+{% block title %}Bootstrap Test Page{% endblock title %}
+
+{% block icon %}
+    {{ super() }}
+{% endblock icon %}
+
+{% block head_css %}
+    {{ super() }}
+    <style>
+    #ohsnap {
+      position: fixed;
+      bottom: 5px;
+      right:5px;
+      margin-left: 5px;
+      z-index:99;
+    }
+    .alert {
+      position: absolute;
+      text-align: left;
+      margin-top: 10px;
+      padding: 15px;
+      border: 1px solid #eed3d7;
+      border-radius: 4px;
+      float: right;
+      clear: right;
+      bottom: 0px;
+      right: 21px;
+      background-color: white;
+    }
+
+    .alert-red {
+      color: white;
+      background-color: #DA4453;
+    }
+    .alert-green {
+      color: white;
+      background-color: #37BC9B;
+    }
+    .alert-blue {
+      color: white;
+      background-color: #4A89DC;
+    }
+    .alert-yellow {
+      color: white;
+      background-color: #F6BB42;
+    }
+    .alert-orange {
+      color:white;
+      background-color: #E9573F;
+    }
+    </style>
+{% endblock head_css %}
+
+{% block head_js %}
+    {{ super() }}
+    <script type="text/javascript" src="/static/js/ohsnap.min.js"></script>
+{% endblock head_js %}
+
+{% block content %}
+    <div id="ohsnap"></div>
+    <!--nav-->
+    {% include 'backstage/frame/home_nav.html' %}
+    <div class="container-fluid">
+    <!--documents-->
+        <div class="row row-offcanvas row-offcanvas-left">
+            {% include 'backstage/frame/home_sidebar.html' %}
+            <div class="col-xs-12 col-sm-9 content">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <a href="javascript:void(0);" class="toggle-sidebar">
+                            <span class="fa fa-angle-double-left" data-toggle="offcanvas" title="隐藏控制栏"></span>
+                        </a>
+                        {% if content_title %}
+                            {{ content_title }}
+                        {% else %}
+
+                        {% endif %}
+                    </h3>
+                  </div>
+                  <div class="panel-body">
+                    {% block inner_content %}
+                    {% endblock %}
+                  </div>
+                </div>
+            </div>
+        <!-- content -->
+        </div>
+    </div>
+{% endblock content %}
+
+{% block footer %}
+    {% include 'backstage/frame/home_footer.html' %}
+{% endblock footer %}
+
+{% block footer_js %}
+    {{ super() }}
+{% endblock footer_js %}

@@ -1,0 +1,189 @@
+<div class="content-row">
+<div class="panel panel-primary">
+    <div class="panel-heading">
+      <div class="panel-title"><b>用户信息</b>
+      </div>
+
+      <div class="panel-options">
+        <a class="bg" data-target="#sample-modal-dialog-1" data-toggle="modal" href="#sample-modal"><i class="entypo-cog"></i></a>
+        <a data-rel="collapse" href="#"><i class="entypo-down-open"></i></a>
+        <a data-rel="close" href="#!/tasks" ui-sref="Tasks"><i class="entypo-cancel"></i></a>
+      </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+{#        <hr>#}
+{#        {{ all_fuc }}#}
+{#        <hr>#}
+{#        {{ data_detail }}#}
+{#        <hr>#}
+{#        {{ all_classid }}#}
+{#        <hr>#}
+        <div class="media col-md-6">
+          <a class="pull-left" href="#"><img class="media-object img-rounded" src="/static/img/photo-4.jpg"></a>
+          <div class="media-body">
+            <h4 class="media-heading">
+                <span class="glyphicon glyphicon-user" title="用户名"> {{ data_detail.data.username }}</span>
+                <span class="glyphicon glyphicon-flag" title="用户组">{{ data_detail.data.permission.group }}</span>
+            </h4>
+            <p class="media-heading" title="手机号">
+                <span class="glyphicon glyphicon-earphone"> {{ data_detail.data.phone }}</span>
+            </p>
+            <p class="media-heading" title="创建时间">
+                <span class="glyphicon glyphicon-calendar"> {{ data_detail.data.create_date }}</span>
+            </p>
+            <p> </p>
+          </div>
+        </div>
+        {% if data_detail.data.infos %}
+        <div class="col-md-6">
+          <ul class="list-group">
+            {% for user_info, info_detail in data_detail.data.infos.items() %}
+            <li class="list-group-item">
+            {% if info_detail %}
+                <span class="badge">{{ info_detail }}</span>
+            {% else %}
+                <span class="badge badge-danger">NULL</span>
+            {% endif %}
+                {{ user_info }}
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+    </div>
+    </div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title"><b>权限设置</b>
+      </div>
+
+      <div class="panel-options">
+        <a class="bg" data-target="#sample-modal-dialog-1" data-toggle="modal" href="#sample-modal"><i class="entypo-cog"></i></a>
+        <a data-rel="collapse" href="#"><i class="entypo-down-open"></i></a>
+        <a data-rel="close" href="#!/tasks" ui-sref="Tasks"><i class="entypo-cancel"></i></a>
+      </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel-group panel-group-lists" id="Permissions">
+                    {% for all_mods in all_fuc.items() if all_mods.0 != 'ContentMod' %}
+                        {{ all_mods }}
+                    <div class="panel">
+                      <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a class="list-group-item" data-toggle="collapse" data-parent="#Permissions" {#href="#collapse-{{ all_mods.0 }}"#}>
+                              {{ all_mods.0|fuc_name }}|{{ all_mods.0 }}
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="collapse-{{ all_mods.0 }}" class="panel-collapse collapse in"><!--带in即为展开-->
+                        <div class="panel-body">
+                          {% for columns in all_mods.1.items() %}
+                          <label style="display: inline;" class="checkbox">
+                            <input type="checkbox" class="permission_checkbox"
+                                   modname="{{ all_mods.0 }}" fucname="{{ columns.0 }}"
+                                   {% if all_mods.0+'#'+columns.0 in data_detail.data.permission.tag %}
+                                   checked{% endif %}>
+                            <span class="handle"></span>
+                            {{ (all_mods.0+'#'+columns.0)|fuc_name }}
+                          </label>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          {% for content_fuc in all_fuc['ContentMod'] %}
+                          <th>{{ ('ContentMod#'+content_fuc)|fuc_name }}</th>
+                          {% endfor %}
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {% for main_column in all_classid|sort if main_column|column_type != 'column' %}
+                        <tr>
+                            <td>{{ main_column|column_name }}</td>
+                            {% for column_fuc in all_fuc['ContentMod'].items() if main_column in column_fuc.1%}
+                            <td>
+                            <label style="" class="checkbox">
+                            <input type="checkbox" class="permission_checkbox"
+                                   modname="ContentMod" fucname="{{ column_fuc.0 }}" columnname="{{ main_column }}"
+                                   {% if main_column in data_detail.data.permission.tag['ContentMod#'+column_fuc.0] %}
+                                   checked
+                                   {% endif %}>
+                            <span class="handle"></span></label>
+                            </td>
+                            {% else %}
+                            <td>
+                            <label style="" class="checkbox">
+                            <input type="checkbox" class="permission_checkbox"
+                                   modname="ContentMod" fucname="{{ column_fuc.0 }}" columnname="{{ main_column }}"
+                                   disabled>
+                            <span class="handle"></span></label>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                      {% endfor %}
+                      </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    $("input").on('ifClicked', function(){
+        var mod_name = $(this).attr('modname');
+        var fuc_name = $(this).attr('fucname');
+        var class_id = $(this).attr('columnname');
+        var show_txt = '';
+        var yon = false;
+        var set_fuc = '';
+        if (typeof class_id == 'undefined'){
+            show_txt = mod_name + '#' + fuc_name;
+            alert(show_txt);
+        }else{
+            show_txt = mod_name + '#' + fuc_name + ' ' + class_id;
+            alert(show_txt);
+        }
+        if (typeof($(this).attr('checked')) == 'undefined'){
+            yon = true;
+            set_fuc = "grant";
+        }else{
+            yon = false;
+            set_fuc = "revoke";
+        }
+        $.ajax({
+            url: "/control/model/PermissionMod/detail",
+            type: "POST",
+            data: {"fuc_name": set_fuc,
+                   "ident": "{{ data_detail.data.username }}",
+                   "func_name": mod_name+'#'+fuc_name,
+                   "class_list": class_id},
+            success: function (data) {
+{#                alert(data);#}
+                console.log(data);
+                var obj =  eval('('+data+')');
+                if(obj.success == 'true'){
+                    if (yon){
+                        ohSnap('已授权: '+show_txt, {'color':'blue', 'duration':'2000'});
+                    }else {
+                        ohSnap('反授权: '+show_txt, {'color':'orange', 'duration':'2000'});
+                    }
+                }else{
+                    ohSnap("失败", {'color':'red'});
+                }
+            }
+        });
+        $(this).attr("checked",yon);
+    });
+</script>
+
+

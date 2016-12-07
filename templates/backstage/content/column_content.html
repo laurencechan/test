@@ -1,0 +1,76 @@
+<h1>Column Content</h1>
+{{ tmp }}
+{#{% for key, value in tmp.items() %}#}
+{#    <h3>#}
+{#    {% if value|show_type == "unicode" %}{{ value.split(',').1 }}{% endif %}#}
+{#        :#}
+{#    {{ value|show_type }}#}
+{#    </h3>#}
+{##}
+{#    {{ value }}#}
+{#{% endfor %}#}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title"><b>Create Form</b>
+      </div>
+
+      <div class="panel-options">
+        <a class="bg" data-target="#sample-modal-dialog-1" data-toggle="modal" href="#sample-modal"><i class="entypo-cog"></i></a>
+        <a data-rel="collapse" href="#"><i class="entypo-down-open"></i></a>
+        <a data-rel="close" href="#!/tasks" ui-sref="Tasks"><i class="entypo-cancel"></i></a>
+      </div>
+    </div>
+
+    <div class="panel-body">
+        <form novalidate="" role="form" class="form-horizontal">
+            <!-- 以下开始模板 -->
+            {% for key, value in temp.items() %}
+            {% if key not in ['author_name', 'author_id'] %}
+            <div class="form-group">
+            <label class="col-md-2 control-label">
+                {% if value|show_type == "unicode" %}
+                    {{ value.split(',').1 }}
+                {% else %}
+                    {{ key }}
+                {% endif %}
+            </label>
+                <div class="col-md-10">
+                    {% if value|show_type == "unicode" %}
+                    <input type="text" required="" placeholder="{{ value.split(',').2 }}"
+                           id="title" class="form-control" name="title">
+                    {% else %}
+                    <input type="text" required="" placeholder="{{ value }}"
+                           id="title" class="form-control" name="title">
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            <!-- 自动模板结束 -->
+        <button type="button" class="btn btn-primary btn-block">Primary</button>
+        </form>
+    </div>
+</div>
+
+{#{% for key, value in all_column.items() recursive %}#}
+{#<li>#}
+{#    <a href="#column{{ key }}" class="list-group-item " data-toggle="collapse">#}
+{#        <i class="glyphicon glyphicon-th-list"></i>#}
+{#        {{ key|column_name }}#}
+{#        <span class="glyphicon glyphicon-chevron-right"></span>#}
+{#    </a>#}
+{#    <div class="collapse" id="column{{ key }}">#}
+{#        {% if value|is_list %}#}
+{#            {% for column_fuc in value %}#}
+{#                <a href="{{ URL_BASE }}/column/{{ key }}/{{ column_fuc.split('#').1 }}" class="list-group-item">#}
+{#                    <i class="glyphicon glyphicon-cog"></i>#}
+{#                    {{ column_fuc|fuc_name }}#}
+{#                </a>#}
+{#            {% endfor %}#}
+{#        {% else %}#}
+{#        <ul>{{ loop(value.items())}}</ul>#}
+{#        {% endif %}#}
+{#    </div>#}
+{#</li>#}
+{#{% endfor %}#}

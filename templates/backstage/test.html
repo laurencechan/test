@@ -1,0 +1,28 @@
+{#<!-- extend base layout -->#}
+{% extends "backstage/base/base_content.html" %}
+{% block title %}CMS后台管理中心{% endblock title %}
+
+{% block icon %}
+    {{ super() }}
+{% endblock icon %}
+
+{% block head_css %}
+    {{ super() }}
+{% endblock head_css %}
+
+{% block head_js %}
+    {{ super() }}
+{% endblock head_js %}
+
+{% block inner_content %}
+    {% include 'backstage/parts/file_upload.html' %}
+{#    {% include 'backstage/parts/test_checkbox.html' %}#}
+{% endblock inner_content %}
+
+{% block footer %}
+    {% include 'backstage/frame/home_footer.html' %}
+{% endblock footer %}
+
+{% block footer_js %}
+    {{ super() }}
+{% endblock footer_js %}

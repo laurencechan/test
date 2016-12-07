@@ -1,0 +1,119 @@
+<!--查找 开始-->
+<div class="col-md-10" style="width: 20%">
+    <input type="text" required="" placeholder="标题" id="title" class="form-control" width="400px" name="title">
+</div>
+<div class="col-md-10" style="width: 20%">
+    <input type="text" required="" placeholder="作者" id="author" class="form-control" width="400px" name="author">
+</div>
+<div class="btn-group" style="float: left">
+    <button type="button" class="btn btn-default">文章类型</button>
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <span class="caret"></span>
+        <span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="#">文章1</a></li>
+        <li class="divider"></li>
+        <li><a href="#">文章2</a></li>
+        <li class="divider"></li>
+        <li><a href="#">文章3</a></li>
+        <li class="divider"></li>
+        <li><a href="#">文章4</a></li>
+    </ul>
+</div>
+<div class="col-md-3" style="width:90px">
+    <button type="button" class="btn btn-success btn-block">查找</button>
+</div>
+<!--查找 结束-->
+<center>
+    <!--表格/列表 开始-->
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>登录名</th>
+                <th>真实性别</th>
+                <th>状态</th>
+                <th>创建时间</th>
+                <th>操作（编辑、删除）</th>
+            </tr>
+            </thead>
+            {% for  i in  get_list["data"] %}
+                <tbody>
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ i.title }}</td>
+                    <td>{{ i.content_type }}</td>
+                    <td>
+                        <label class="toggle" >
+                            <input type="checkbox" {% if i.reviewed %}checked{% endif %} onclick="check('{{ i._id }}',{% if i.reviewed %}0{% else %}1{% endif %})">
+                            <span class="handle"></span>
+                        </label>
+
+                    </td>
+                    <td>{{ i.addtime }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" onclick="modify('{{ i._id }}')" class="btn btn-success">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                            </button>
+                            <button type="button" onclick="del('{{ i._id }}')" class="btn btn-success">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+        <!--表格/列表 结束-->
+
+    </div>
+    <!--分页 开始-->
+{#    <div class="col-md-12">#}
+{#        <ul class="pagination">#}
+{#            <li class="active"><a href="#">首页</a></li>#}
+{#            <li class="active"><a href="#">上一页</a></li>#}
+{#            <li class="active"><a href="#">1</a></li>#}
+{#            <li><a href="#">2</a></li>#}
+{#            <li><a href="#">3</a></li>#}
+{#            <li><a href="#">4</a></li>#}
+{#            <li><a href="#">5</a></li>#}
+{#            <li><a href="#">6</a></li>#}
+{#            <li><a href="#">7</a></li>#}
+{#            <li><a href="#">8</a></li>#}
+{#            <li><a href="#">9</a></li>#}
+{#            <li class="disabled"><a href="#">10</a></li>#}
+{#            <li class="active"><a href="#">下一页</a></li>#}
+{#            <li class="active"><a href="#">尾页</a></li>#}
+{#        </ul>#}
+{#    </div>#}
+    {% include 'backstage/parts/page_nav.html' %}
+    <!--分页 结束-->
+</center>
+<script>
+    function modify(id) {
+        window.location.href = "/control/model/ContentMod/detail?id=" + id;
+    }
+    function del(id) {
+        $.ajax({
+             url: "/control/model/ContentMod/detail",
+             type: "DELETE",
+             data: {"id": id, "type": "del"},
+             success: function(data) {
+                 alert(data);
+             }
+        })
+    }
+    function check(id,value) {
+        $.ajax({
+             url: "/control/model/ContentMod/detail",
+             type: "PATCH",
+             data: {"id": id, "type": "check","v":value},
+             success: function(data) {
+                 alert(data);
+             }
+        })
+    }
+</script>

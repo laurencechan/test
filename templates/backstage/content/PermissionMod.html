@@ -1,0 +1,53 @@
+{#{{ all_fuc }}#}
+<!--查找 开始-->
+<div class="col-md-10" style="width: 20%">
+    <input type="text" required="" placeholder="登录名" id="title" class="form-control" width="400px" name="title">
+</div>
+<div class="col-md-3" style="width:90px">
+    <button type="button" class="btn btn-success btn-block">查找</button>
+</div>
+<!--查找 结束-->
+{#{% set get_list=list_data %}#}
+<center>
+    <!--表格/列表 开始-->
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>用户名</th>
+                <th>手机号</th>
+                <th>创建时间</th>
+                <th>操作（编辑）</th>
+            </tr>
+            </thead>
+            {% for i in list_data["data"] %}
+                <tbody>
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ i.username }}</td>
+                    <td>{{ i.phone }}</td>
+                    <td>{{ i.create_date }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" onclick="modify('{{ i._id }}')" class="btn btn-success">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+        <!--表格/列表 结束-->
+
+    </div>
+    <!--分页 开始-->
+    {% include 'backstage/frame/page_nav.html' %}
+    <!--分页 结束-->
+</center>
+<script>
+    function modify(id) {
+        window.location.href = "/control/model/PermissionMod/detail?id=" + id;
+    }
+</script>

@@ -1,0 +1,43 @@
+{#{{ page.base_url }}#}
+{#{{ page.total }}#}
+{#{{ page.skip }}#}
+{#{{ page.limit }}#}
+{#{{ page.query }}#}
+
+<div class="col-md-12">
+    <ul class="pagination">
+        <li class="{% if page.skip == 0 %}active{% else %}{% endif %}">
+            <a href="{{ page.base_url }}">
+                首页
+            </a>
+        </li>
+        {% if page.skip - page.limit >= 0 %}
+        <li class="">
+            <a href="{{ page.base_url }}?{{ page.query }}{% if page.query %}&{% endif %}limit={{ page.limit }}&skip={{ page.skip - page.limit }}">
+                上一页
+            </a>
+        </li>
+        {% endif %}
+        {% for skip in range(page.skip - page.limit * 5, page.skip + page.limit * 5, page.limit) %}
+        {% if skip >=0 and skip < page.total %}
+        <li class="{% if skip|round|int == page.skip %}active{% endif %}">
+            <a href="{{ page.base_url }}?{{ page.query }}{% if page.query %}&{% endif %}limit={{ page.limit }}&skip={{ skip }}">
+                {{ (skip / page.limit + 1)|round|int }}
+            </a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        {% if page.skip + page.limit <= page.total %}
+        <li class="{% if page.skip > page.total - page.limit %}disabled{% else %}{% endif %}">
+            <a href="{{ page.base_url }}?{{ page.query }}{% if page.query %}&{% endif %}limit={{ page.limit }}&skip={{ page.skip + page.limit }}">
+                下一页
+            </a>
+        </li>
+        {% endif %}
+        <li class="{% if page.skip > (page.total - page.limit) %}disabled{% else %}{% endif %}">
+            <a href="{{ page.base_url }}?{{ page.query }}{% if page.query %}&{% endif %}limit={{ page.limit }}&skip={{ page.total - page.limit }}">
+                尾页
+            </a>
+        </li>
+    </ul>
+</div>

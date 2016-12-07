@@ -1,0 +1,156 @@
+<div class="content-row">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title"><b>用户信息</b>
+            </div>
+
+
+        </div>
+        <div class="panel-body">
+            <div class="media col-md-6">
+                <a class="pull-left" href="#"><img class="media-object img-rounded" src="/static/img/photo-4.jpg"></a>
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        <span class="glyphicon glyphicon-user" title="用户名"> {{ data_detail.data.username }}</span>
+                        <span class="glyphicon glyphicon-flag"
+                              title="用户组">{{ data_detail.data.permission.group }}</span>
+                    </h4>
+                    <p class="media-heading" title="手机号">
+                        <span class="glyphicon glyphicon-earphone"> {{ data_detail.data.phone }}</span>
+                    </p>
+                    <p class="media-heading" title="创建时间">
+                        <span class="glyphicon glyphicon-calendar"> {{ data_detail.data.create_date }}</span>
+                    </p>
+                    <p></p>
+                </div>
+            </div>
+            {% if data_detail.data.infos %}
+                <div class="col-md-6">
+                    <ul class="list-group">
+                        {% for user_info, info_detail in data_detail.data.infos.items() %}
+                            <li class="list-group-item">
+                                {% if info_detail %}
+                                    <span class="badge">{{ info_detail }}</span>
+                                {% else %}
+                                    <span class="badge badge-danger">NULL</span>
+                                {% endif %}
+                                {{ user_info }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            <div class="panel-heading" style="background-color: #909BAF;height: 40px;margin-top: 180px">
+                <div class="panel-title"><b>用户信息修改</b>
+                    <p style="float: right"></p></div>
+            </div>
+            <div class="panel panel-default">
+                <div class="modal-body">
+                    {#                              <p>Feel free to contact us for any issues you might have with our products.</p>#}
+                    {#                    <form method="post" action="UserMod_detail.html">#}
+                <form>
+                    <div style="margin-top: 20px;margin-bottom: 30px;border: 0px;">
+                        <div class="col-xs-6" style="width: 400px;margin-left: 300px">
+                            <label>用户名</label>
+                            <input type="text" class="form-control" placeholder="Name" id="username"
+                                   value="{{ data_detail.data.username }}">
+                        </div>
+                        <div class="col-xs-6" style="width: 400px;float: left">
+                            <label>用户分类</label>
+                            <input type="text" class="form-control" placeholder="group" id="group"
+                                   value="{{ data_detail.data.permission.group }}">
+                        </div>
+
+                        <div class="col-xs-6" style="width: 400px;margin-left: 300px">
+                            <label>性别</label>
+                            {% if data_detail.data.infos.sex == "male" or data_detail.data.infos.sex == "男" %}
+                                <select name="selecter_basic" class="selecter_3"
+                                        data-selecter-options='{"cover":"true"}'>
+                                <option value="1">男</option>
+                                <option value="2">女</option>
+                                <option value="3">保密</option>
+                            {% elif data_detail.data.infos.sex == "female" or data_detail.data.infos.sex == "女" %}
+                                <select name="selecter_basic" class="selecter_3"
+                                        data-selecter-options='{"cover":"true"}'>
+                                <option value="1">女</option>
+                                <option value="2">男</option>
+                                <option value="3">保密</option>
+                            {% else %}
+                                <select name="selecter_basic" class="selecter_3"
+                                        data-selecter-options='{"cover":"true"}'>
+                                <option value="1">保密</option>
+                                <option value="2">男</option>
+                                <option value="3">女</option>
+                            {% endif %}
+                            </select>
+
+                        </div>
+                        <div class="col-xs-6" style="width: 400px;float: left">
+                            <label>年龄</label>
+                            <input type="text" class="form-control" placeholder="age" id="age"
+                                   value="{{ data_detail.data.infos.age }}">
+                        </div>
+                        <div class="col-xs-6" style="width: 400px;margin-left: 300px">
+                            <label>所属单位</label>
+                            <input type="text" class="form-control" placeholder="belong" id="belong"
+                                   value="{{ data_detail.data.infos.belong }}">
+                        </div>
+                        <div class="col-xs-6" style="width: 400px;float: left">
+                            <label>电话</label>
+                            <input type="text" class="form-control" placeholder="phone" id="phone"
+                                   value="{{ data_detail.data.phone }}">
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10" style="margin-left: 1200px;">
+                                <button id="submit" class="btn btn-info">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                    {#                    </form>#}
+                </div>
+            </div>
+{#        <script type="text/javascript">#}
+{#            $(function(){#}
+{#                $('#id').click(function(){#}
+{#                    $.ajax({#}
+{#                        type:'POST',#}
+{#                        url:'/control/model/UserMod/detail',#}
+{#                        data: $('form').serializeArray(),#}
+{#                        success:function(){#}
+{#                            alert($('form').serializeArray())#}
+{#                        }#}
+{#                    });#}
+{#                });#}
+{#            });#}
+{##}
+{#        </script>#}
+            <script type="text/javascript">
+{#                function myfunc(){#}
+{#                    for(var i=0;i<)#}
+{#                }#}
+
+                $("#submit").click(function () {
+                    var dic_info = new Array();
+                    for(var i=0;i<($('input').size());i++){
+                        dic_info[$('input').eq(i).attr('id')] = $('input').eq(i).val();
+                    }
+                    dic_info["fun_name"] = "modify";
+                    delete dic_info["username"];
+                    console.log(dic_info);
+                    var ident = $("#username").val();
+                    alert(ident);
+                            $.ajax({
+                                url: "/control/model/UserMod/detail",
+                                type: "POST",
+                                data: {"ident": ident,
+                                       "info": dic_info
+                                },
+                                success: function (response,status,xhr) {
+{#                                    alert(response);#}
+                                    console.log(data);
+                                }
+                            });
+                });
+            </script>
+            <div class="panel panel-default">
